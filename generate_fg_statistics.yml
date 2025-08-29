@@ -1,0 +1,247 @@
+- name: Generate FG users statistics for a single date on all hosts
+  hosts: all
+  gather_facts: no
+  become: yes
+
+## generating statistics for Daniel, photos taken in total
+## ansible-playbook /etc/ansible/roles/torlowski.ad_hoc/generate_fg_statistics.yml -u root -t "get_stat" -l ngn_fg_prod_stats -e run_date="2025-08-12" 
+
+## getting space size of mandant to removal
+## ansible-playbook /etc/ansible/roles/torlowski.ad_hoc/generate_fg_statistics.yml -u root -t "get_stat_inactive" -l ngn_fg_prod_stats
+  vars:
+    fotogis_db: fotogis
+    fotogis_user: postgres
+    csv_file: "{{ playbook_dir }}/files/statistics_fg/fotogis_stats.csv"
+    csv_file_size: "{{ playbook_dir }}/files/statistics_fg/fotogis_stats_size.csv"
+    csv_file_owner: torlowski
+    run_date: "2020-01-01"
+    tmp_dir: "/tmp/fotogis_stats"
+
+  tasks:
+    - name: Run Active Mandants query
+      community.postgresql.postgresql_query:
+        db: "{{ fotogis_db }}"
+        query: |
+          SELECT count(*) AS mandants_count
+          FROM licenses
+          WHERE expirationdate >= '{{ run_date }}'
+            AND creationdate < '{{ run_date }}';
+        login_user: "{{ fotogis_user }}"
+      register: mandants_count_result
+      become_user: "{{ fotogis_user }}"
+      tags: get_stat
+
+    - name: Run FG user limit query
+      community.postgresql.postgresql_query:
+        db: "{{ fotogis_db }}"
+        query: |
+          SELECT SUM(users_limit_fotogis) AS total_users_limit
+          FROM licenses
+          WHERE expirationdate >= '{{ run_date }}'
+            AND creationdate < '{{ run_date }}';
+        login_user: "{{ fotogis_user }}"
+      register: fg_user_limit_result
+      become_user: "{{ fotogis_user }}"
+      tags: get_stat
+
+    - name: Run active users query
+      community.postgresql.postgresql_query:
+        db: "{{ fotogis_db }}"
+        query: |
+          SELECT count(*) AS active_users
+          FROM users u
+          JOIN licenses l ON u.project_id = l.project_id
+          WHERE l.expirationdate >= '{{ run_date }}'
+            AND l.creationdate < '{{ run_date }}'
+            AND u.disabled = FALSE;
+        login_user: "{{ fotogis_user }}"
+      register: active_users_result
+      become_user: "{{ fotogis_user }}"
+      tags: get_stat
+
+    - name: Run taken photos query
+      community.postgresql.postgresql_query:
+        db: "{{ fotogis_db }}"
+        query: |
+          SELECT SUM(u.photoscount) AS total_photos_taken
+          FROM users u
+          JOIN licenses l ON u.project_id = l.project_id
+          WHERE l.expirationdate >= '{{ run_date }}'
+            AND l.creationdate < '{{ run_date }}'
+            AND u.disabled = FALSE;
+        login_user: "{{ fotogis_user }}"
+      register: taken_photos_result
+      become_user: "{{ fotogis_user }}"
+      tags: get_stat
+
+    - name: Set facts on each host (handle null as 0)
+      set_fact:
+        fg_stats:
+          mandants_count: "{{ (mandants_count_result.query_result[0].mandants_count | default(0)) | int }}"
+          users_limit: "{{ (fg_user_limit_result.query_result[0].total_users_limit | default(0)) | int }}"
+          active_users: "{{ (active_users_result.query_result[0].active_users | default(0)) | int }}"
+          photos_taken: "{{ (taken_photos_result.query_result[0].total_photos_taken | default(0)) | int }}"
+      tags: get_stat
+
+    - name: Save host partial results to a JSON file on localhost
+      copy:
+        content: |
+          {
+            "host": "{{ inventory_hostname }}",
+            "mandants_count": {{ fg_stats.mandants_count }},
+            "users_limit": {{ fg_stats.users_limit }},
+            "active_users": {{ fg_stats.active_users }},
+            "photos_taken": {{ fg_stats.photos_taken }}
+          }
+        dest: "{{ tmp_dir }}/{{ inventory_hostname }}.json"
+      delegate_to: localhost
+      run_once: false
+      tags: get_stat
+
+    - name: Run inactive mandants drive size query
+      community.postgresql.postgresql_query:
+        db: "{{ fotogis_db }}"
+        query: |
+          SELECT DISTINCT ON (p.id)
+                p.id, p.apiurl, p.domain, p.name, p.number, p.size_on_disc,
+                l.creationdate, l.expirationdate, l.isactive
+          FROM projects p
+          JOIN licenses l ON p.id = l.project_id
+            AND l.isactive = FALSE
+          ORDER BY p.id, p.size_on_disc DESC;
+        login_user: "{{ fotogis_user }}"
+      register: inactive_mandants_drive_size_result
+      become_user: "{{ fotogis_user }}"
+      tags: get_stat_inactive
+
+    - name: Ensure tmp directory exists on localhost
+      file:
+        path: "{{ tmp_dir }}"
+        state: directory
+        mode: '0755'
+      delegate_to: localhost
+      run_once: true
+      tags: get_stat,get_stat_inactive
+
+    # --- NEW: Save inactive results per host ---
+    - name: Save inactive mandants results per host into JSON
+      copy:
+        content: "{{ {'hostname': inventory_hostname, 'list': inactive_mandants_drive_size_result.query_result} | to_json }}"
+        dest: "{{ tmp_dir }}/{{ inventory_hostname }}_inactive.json"
+      delegate_to: localhost
+      run_once: false
+      tags: get_stat_inactive
+
+    # --- Aggregate inactive across all hosts ---
+    - name: Aggregate inactive mandants from all hosts and write CSV
+      delegate_to: localhost
+      run_once: true
+      tags: get_stat_inactive
+      block:
+        - name: Find all inactive JSON files
+          find:
+            paths: "{{ tmp_dir }}"
+            patterns: "*_inactive.json"
+          register: inactive_json_files
+
+        - name: Load JSON data from each inactive file
+          set_fact:
+            all_inactive: "{{ all_inactive | default([]) + [lookup('file', item.path) | from_json] }}"
+          loop: "{{ inactive_json_files.files }}"
+
+        - name: Check if CSV file exists
+          stat:
+            path: "{{ csv_file_size }}"
+          register: csv_file_stat
+
+        - name: Write CSV header if file does not exist
+          copy:
+            dest: "{{ csv_file_size }}"
+            content: "hostname,id,apiurl,domain,name,number,size_on_disc,creationdate,expirationdate,isactive\n"
+          when: not csv_file_stat.stat.exists
+
+        - name: Append inactive mandants results to CSV
+          lineinfile:
+            path: "{{ csv_file_size }}"
+            line: >-
+              {{ item.0.hostname }},
+              {{ item.1.id }},
+              {{ item.1.apiurl }},
+              {{ item.1.domain }},
+              {{ item.1.name }},
+              {{ item.1.number }},
+              {{ item.1.size_on_disc }},
+              {{ item.1.creationdate }},
+              {{ item.1.expirationdate }},
+              {{ item.1.isactive }}
+            insertafter: EOF
+            create: yes
+          loop: "{{ all_inactive | subelements('list', skip_missing=True) }}"
+          loop_control:
+            label: "{{ item.1.id | default('none') }}"
+
+        - name: Ensure ownership of CSV is correct
+          file:
+            path: "{{ csv_file_size }}"
+            owner: "{{ csv_file_owner }}"
+            group: "{{ csv_file_owner }}"
+            mode: '0644'
+
+        - name: Cleanup inactive JSON partial files
+          file:
+            path: "{{ tmp_dir }}"
+            state: absent
+
+    # --- Aggregate active stats across all hosts ---
+    - name: Aggregate all hosts results and write CSV on localhost
+      delegate_to: localhost
+      run_once: true
+      tags: get_stat
+      block:
+        - name: Read all JSON partial result files
+          find:
+            paths: "{{ tmp_dir }}"
+            patterns: "*.json"
+          register: json_files
+
+        - name: Load JSON data from each file
+          set_fact:
+            all_stats: "{{ all_stats | default([]) + [lookup('file', item.path) | from_json] }}"
+          loop: "{{ json_files.files }}"
+
+        - name: Sum stats across all hosts
+          set_fact:
+            total_mandants_count: "{{ all_stats | map(attribute='mandants_count') | sum }}"
+            total_users_limit: "{{ all_stats | map(attribute='users_limit') | sum }}"
+            total_active_users: "{{ all_stats | map(attribute='active_users') | sum }}"
+            total_photos_taken: "{{ all_stats | map(attribute='photos_taken') | sum }}"
+
+        - name: Check if CSV file exists
+          stat:
+            path: "{{ csv_file }}"
+          register: csv_file_stat
+
+        - name: Write CSV header if file does not exist
+          copy:
+            dest: "{{ csv_file }}"
+            content: "Date,Active Mandants,Active Users,FG User Limit,Taken Photos\n"
+          when: not csv_file_stat.stat.exists
+
+        - name: Append summed result row to CSV
+          lineinfile:
+            path: "{{ csv_file }}"
+            line: "{{ run_date }},{{ total_mandants_count }},{{ total_active_users }},{{ total_users_limit }},{{ total_photos_taken }}"
+            create: yes
+            insertafter: EOF
+
+        - name: Ensure ownership of CSV is correct
+          file:
+            path: "{{ csv_file }}"
+            owner: "{{ csv_file_owner }}"
+            group: "{{ csv_file_owner }}"
+            mode: '0644'
+
+        - name: Cleanup active JSON partial files
+          file:
+            path: "{{ tmp_dir }}"
+            state: absent

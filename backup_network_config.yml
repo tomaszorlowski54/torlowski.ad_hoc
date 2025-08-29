@@ -1,0 +1,196 @@
+- name: Backup server networking
+  hosts: all
+
+####### Execution test
+####### ansible-playbook /etc/ansible/roles/torlowski.ad_hoc/backup_network_config.yml -u root -t test_connection -l ngn_feedink_all
+
+####### Execution standard
+####### ansible-playbook /etc/ansible/roles/torlowski.ad_hoc/backup_network_config.yml -u root -t backup_network -l ngn_feedink_all
+
+
+  become: true
+  vars:
+    base_dir: "/root"
+    suffix: '-2025-08'
+    server_dir: "{{ base_dir }}/{{ inventory_hostname }}{{ suffix }}"
+    network_dir: "{{ server_dir }}/network"
+    backuped_file_user: "torlowski"
+    backuped_file_group: "torlowski"
+
+  tasks:
+    - name: stat test
+      become: false
+      debug:
+        msg: 
+          - "test"
+      delegate_to: localhost 
+      tags: backup_network,test_connection
+
+    - name: Remove existing backup directory for server
+      file:
+        path: "{{ server_dir }}"
+        state: absent
+      tags: backup_network
+
+    - name: Create base directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0700'
+      loop:
+        - "{{ network_dir }}"
+      tags: backup_network
+
+# --- Network info ---
+    - name: Save 'ip a' output
+      command: ip a
+      register: ip_a
+      tags: backup_network
+
+    - name: Save 'ip ro sh' output
+      command: ip ro sh
+      register: ip_ro
+      tags: backup_network
+
+    - name: Save 'ip -6 ro sh' output
+      command: ip -6 ro sh
+      register: ip6_ro
+      tags: backup_network
+
+    - name: Write network commands output to file
+      copy:
+        content: |
+          === ip a ===
+          {{ ip_a.stdout }}
+
+          === ip ro sh ===
+          {{ ip_ro.stdout }}
+
+          === ip -6 ro sh ===
+          {{ ip6_ro.stdout }}
+        dest: "{{ network_dir }}/network_info.txt"
+      tags: backup_network
+
+    - name: Copy /etc/resolv.conf
+      copy:
+        src: /etc/resolv.conf
+        dest: "{{ network_dir }}/resolv.conf"
+      tags: backup_network
+
+    - name: Copy /etc/sysconfig/network
+      copy:
+        src: /etc/sysconfig/network
+        dest: "{{ network_dir }}"
+        remote_src: yes
+      tags: backup_network
+
+    - name: Find all ifcfg files
+      find:
+        paths: /etc/sysconfig/network-scripts
+        patterns: "ifcfg-*"
+        use_regex: yes
+        excludes: ".*~$"
+      register: backup_ifcfg_configs
+      tags: backup_network
+
+    - name: Copy ifcfg files to network directory
+      copy:
+        src: "{{ item.path }}"
+        dest: "{{ network_dir }}/{{ item.path | basename }}"
+        remote_src: yes
+      with_items: "{{ backup_ifcfg_configs.files }}"
+      tags: backup_network
+
+    - name: Find all route files
+      find:
+        paths: /etc/sysconfig/network-scripts
+        patterns: "route*"
+        use_regex: yes
+        excludes: ".*~$"
+      register: backup_routes_configs
+      tags: backup_network
+
+    - name: Copy routes to network directory
+      copy:
+        src: "{{ item.path }}"
+        dest: "{{ network_dir }}/{{ item.path | basename }}"
+        remote_src: yes
+      with_items: "{{ backup_routes_configs.files }}"
+      tags: backup_network
+
+
+# --- Firewall info ---
+    - name: Save 'firewall-cmd --list-all' output
+      command: firewall-cmd --list-all
+      register: firewall_list
+      tags: backup_network
+
+    - name: Write network commands output to file
+      copy:
+        content: |
+          === firewall-cmd --list-all ===
+          {{ firewall_list.stdout }}
+        dest: "{{ network_dir }}/firewall_info.txt"
+      tags: backup_network
+
+# save backups
+    - name: Archive entire backup directory
+      shell: >
+        tar -czf "{{ server_dir }}.tgz" -C "{{ server_dir | dirname }}" "{{ server_dir | basename }}"        
+      tags: backup_network
+
+    - name: Create local backup directory on ansible node
+      become: false
+      delegate_to: localhost
+      run_once: true
+      file:
+        path: "{{ playbook_dir  }}/files/backup_network"
+        state: directory
+        mode: '0755'
+      tags: backup_network
+
+    - name: Fetch backup archive from remote to ansible node
+      fetch:
+        src: "{{ server_dir }}.tgz"
+        dest: "{{ playbook_dir  }}/files/backup_network/"
+        flat: yes
+      tags: backup_network
+
+    - name: Fetch backup archive from remote to ansible node
+      fetch:
+        src: "{{ server_dir }}.tgz"
+        dest: "{{ playbook_dir }}/files/backup_network/{{ inventory_hostname }}{{ suffix }}.tgz"
+        flat: yes
+      tags: backup_network
+
+    - name: Unarchive backup
+      shell: tar -xvf {{ inventory_hostname }}{{ suffix }}.tgz
+      delegate_to: localhost
+      args:
+        chdir: "{{ playbook_dir }}/files/backup_network"
+      tags: backup_network
+
+    - name: Ensure ownership of the local backup archive 2
+      file:
+        path: "{{ playbook_dir }}/files/backup_network/{{ inventory_hostname }}{{ suffix }}"
+        owner: "{{ backuped_file_user }}"
+        group: "{{ backuped_file_group }}"
+        recurse: true
+      delegate_to: localhost
+      tags: backup_network
+
+    - name: Ensure tar is removed
+      file:
+        path: "{{ playbook_dir }}/files/backup_network/{{ inventory_hostname }}{{ suffix }}.tgz"
+        owner: "{{ backuped_file_user }}"
+        group: "{{ backuped_file_group }}"
+        state: absent
+      delegate_to: localhost
+      tags: backup_network
+
+    - name: print saved dir path on drive
+      become: false
+      debug:
+        msg: "{{ playbook_dir  }}/files/backup_network/{{ inventory_hostname }}{{ suffix }}"
+      delegate_to: localhost
+      tags: backup_network 
