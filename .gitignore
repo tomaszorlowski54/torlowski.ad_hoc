@@ -1,3 +1,4 @@
 *.sh
 files/backup_network/*
 files/statistics_fg/*
+files/servers_informations/*
