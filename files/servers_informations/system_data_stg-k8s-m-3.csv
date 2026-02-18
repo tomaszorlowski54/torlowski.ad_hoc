@@ -1,0 +1,83 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+stg-k8s-m-3, CentOS 7.9, 10.64.11.123, "/dev/mapper/vg_os-lv_root   18G   14G  4.8G  74% /
+shm                         64M     0   64M   0% /run/containerd/io.containerd.grpc.v1.cri/sandboxes/4ac64d8c3e9c2ceccd365cf966b039fda577ad0baa80e89a62aa9f3ee9c9af4f/shm
+shm                         64M     0   64M   0% /run/containerd/io.containerd.grpc.v1.cri/sandboxes/2d7545ddcd42e92872edab9ced9928eed69c94e2a337ca355f829407287eb067/shm
+shm                         64M     0   64M   0% /run/containerd/io.containerd.grpc.v1.cri/sandboxes/bf57fc8e6e353b863567aa250cffad274a86a67ce0e82ca164a8be6a4e9b7e33/shm
+shm                         64M     0   64M   0% /run/containerd/io.containerd.grpc.v1.cri/sandboxes/eef5b56bcf80231a30afb24cf804074a76a5a64234644be323395a4f082fecd0/shm
+overlay                     18G   14G  4.8G  74% /run/containerd/io.containerd.runtime.v2.task/k8s.io/2d7545ddcd42e92872edab9ced9928eed69c94e2a337ca355f829407287eb067/rootfs
+overlay                     18G   14G  4.8G  74% /run/containerd/io.containerd.runtime.v2.task/k8s.io/eef5b56bcf80231a30afb24cf804074a76a5a64234644be323395a4f082fecd0/rootfs
+overlay                     18G   14G  4.8G  74% /run/containerd/io.containerd.runtime.v2.task/k8s.io/bf57fc8e6e353b863567aa250cffad274a86a67ce0e82ca164a8be6a4e9b7e33/rootfs
+overlay                     18G   14G  4.8G  74% /run/containerd/io.containerd.runtime.v2.task/k8s.io/4ac64d8c3e9c2ceccd365cf966b039fda577ad0baa80e89a62aa9f3ee9c9af4f/rootfs
+shm                         64M     0   64M   0% /run/containerd/io.containerd.grpc.v1.cri/sandboxes/7ce69d225f7cfba077e389195cdbaa362bdb4378847500e88d22f5860703a47e/shm
+overlay                     18G   14G  4.8G  74% /run/containerd/io.containerd.runtime.v2.task/k8s.io/7ce69d225f7cfba077e389195cdbaa362bdb4378847500e88d22f5860703a47e/rootfs
+overlay                     18G   14G  4.8G  74% /run/containerd/io.containerd.runtime.v2.task/k8s.io/b2b7fd1894d8e650931802917b140f5ce9d90c2fe93295ce48aeac0a7bae99c6/rootfs
+overlay                     18G   14G  4.8G  74% /run/containerd/io.containerd.runtime.v2.task/k8s.io/6677cdb3c21533e07e9a721c1d9d09551318a566096986fe1d0b5cec24b115d7/rootfs
+overlay                     18G   14G  4.8G  74% /run/containerd/io.containerd.runtime.v2.task/k8s.io/930e75d17910bfde895d277f43a4e8007baa100e89f2b835101288547c3da41b/rootfs
+overlay                     18G   14G  4.8G  74% /run/containerd/io.containerd.runtime.v2.task/k8s.io/eac2b8623c71edaaba085336d3ca4b675960d23596840b61ba45fcc23ed5177b/rootfs
+overlay                     18G   14G  4.8G  74% /run/containerd/io.containerd.runtime.v2.task/k8s.io/df1a70f0f63025587b51a33681f3029642745f3e5ac89c04b7616a96e96c37a4/rootfs
+shm                         64M     0   64M   0% /run/containerd/io.containerd.grpc.v1.cri/sandboxes/a21f0936d1f8377693a09a8a3c89f707dc90c9431881a62ee67a1cb16f767b64/shm
+overlay                     18G   14G  4.8G  74% /run/containerd/io.containerd.runtime.v2.task/k8s.io/a21f0936d1f8377693a09a8a3c89f707dc90c9431881a62ee67a1cb16f767b64/rootfs
+overlay                     18G   14G  4.8G  74% /run/containerd/io.containerd.runtime.v2.task/k8s.io/80c19c66bd146bccfc2d29579925ebf3b00f395e393fbd237be102cfdd783069/rootfs
+shm                         64M     0   64M   0% /run/containerd/io.containerd.grpc.v1.cri/sandboxes/d8315f7b9b572f679248df1f817d72f41462956106076fe3e1cd84049cd9989e/shm
+overlay                     18G   14G  4.8G  74% /run/containerd/io.containerd.runtime.v2.task/k8s.io/d8315f7b9b572f679248df1f817d72f41462956106076fe3e1cd84049cd9989e/rootfs
+overlay                     18G   14G  4.8G  74% /run/containerd/io.containerd.runtime.v2.task/k8s.io/1c16e7862c49a358affecee0a6404a61b0750f4bdca90869f24dd59c16f6013f/rootfs", "Local
+*:68
+*:111
+10.64.11.123:123
+127.0.0.1:123
+*:123
+*:797
+[::]:53
+[::]:111
+[fe80::ac9c:893f:7342:d26f]%eth0:123
+[::1]:123
+[::]:123
+[::]:797
+127.0.0.1:10249
+127.0.0.1:2379
+10.64.11.123:2379
+10.64.11.123:2380
+127.0.0.1:2381
+*:111
+127.0.0.1:10257
+127.0.0.1:10259
+*:22
+127.0.0.1:37078
+127.0.0.1:25
+*:5050
+127.0.0.1:10248
+[::]:10250
+[::]:6443
+[::]:111
+[::]:10256
+[::]:8080
+[::]:8181
+[::]:53
+[::]:22
+[::1]:25
+[::]:9153", "auditd.service
+containerd.service
+crond.service
+dbus.service
+getty@tty1.service
+gssproxy.service
+irqbalance.service
+kubelet.service
+lvm2-lvmetad.service
+NetworkManager.service
+ntpd.service
+oddjobd.service
+polkit.service
+postfix.service
+qemu-guest-agent.service
+rpcbind.service
+rpc-gssd.service
+rsyslog.service
+sentinelone.service
+sshd.service
+sssd.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+tuned.service"
+

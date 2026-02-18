@@ -86,7 +86,7 @@
 
     - name: Find all ifcfg files
       find:
-        paths: /etc/sysconfig/network-scripts
+        paths: /etc/NetworkManager/system-connections
         patterns: "ifcfg-*"
         use_regex: yes
         excludes: ".*~$"
@@ -99,6 +99,23 @@
         dest: "{{ network_dir }}/{{ item.path | basename }}"
         remote_src: yes
       with_items: "{{ backup_ifcfg_configs.files }}"
+      tags: backup_network
+
+    - name: Find all ifcfg files from nm
+      find:
+        paths: /etc/NetworkManager/system-connections
+        patterns: ".*\\.nmconnection$"
+        use_regex: yes
+        excludes: ".*~$"
+      register: backup_ifcfg_configs_nm
+      tags: backup_network
+
+    - name: Copy ifcfg files to network directory from nm
+      copy:
+        src: "{{ item.path }}"
+        dest: "{{ network_dir }}/{{ item.path | basename }}"
+        remote_src: yes
+      with_items: "{{ backup_ifcfg_configs_nm.files }}"
       tags: backup_network
 
     - name: Find all route files
@@ -123,7 +140,7 @@
     - name: Save 'firewall-cmd --list-all' output
       command: firewall-cmd --list-all
       register: firewall_list
-      tags: backup_network
+      tags: backup_firewall
 
     - name: Write network commands output to file
       copy:
@@ -131,7 +148,7 @@
           === firewall-cmd --list-all ===
           {{ firewall_list.stdout }}
         dest: "{{ network_dir }}/firewall_info.txt"
-      tags: backup_network
+      tags: backup_firewall
 
 # save backups
     - name: Archive entire backup directory

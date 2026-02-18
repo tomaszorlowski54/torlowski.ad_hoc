@@ -1,0 +1,53 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+nexus-new-1, CentOS 7.9, 10.64.1.149, "/dev/mapper/vg_os-lv_root     12G  2.3G  9.8G  19% /
+/dev/mapper/vg_os-lv_var     5.0G  848M  4.2G  17% /var
+/dev/mapper/vg_data-lv_data   10G  785M  9.3G   8% /opt", "Local
+*:890
+*:68
+*:111
+10.64.1.149:123
+127.0.0.1:123
+*:123
+[::]:890
+[::]:111
+[fe80::4401:faff:feb6:d191]%eth0:123
+[::1]:123
+[::]:123
+*:443
+*:5666
+*:111
+*:80
+127.0.0.1:8081
+127.0.0.1:35985
+*:22
+127.0.0.1:25
+[::]:5666
+[::]:111
+[::]:22
+[::1]:25", "auditd.service
+crond.service
+dbus.service
+filebeat.service
+getty@tty1.service
+gssproxy.service
+irqbalance.service
+lvm2-lvmetad.service
+NetworkManager.service
+nexus.service
+nginx.service
+nrpe.service
+ntpd.service
+oddjobd.service
+polkit.service
+postfix.service
+qemu-guest-agent.service
+rpcbind.service
+rpc-gssd.service
+rsyslog.service
+sshd.service
+sssd.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+tuned.service"
+

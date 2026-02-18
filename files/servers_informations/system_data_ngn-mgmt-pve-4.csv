@@ -1,0 +1,55 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+ngn-mgmt-pve-4, Debian 11.1, 10.64.1.44, "udev                   63G     0   63G   0% /dev
+/dev/mapper/pve-root   91G  7.0G   80G   9% /
+/dev/fuse             128M   24K  128M   1% /etc/pve", "Local
+0.0.0.0:111
+127.0.0.1:323
+10.64.1.44:5405
+[::]:111
+[::1]:323
+127.0.0.1:85
+0.0.0.0:22
+127.0.0.1:25
+0.0.0.0:5666
+0.0.0.0:111
+[::]:22
+*:3128
+[::1]:25
+[::]:5666
+*:8006
+[::]:111", "chrony.service
+corosync.service
+cron.service
+dbus.service
+dm-event.service
+getty@tty1.service
+iscsid.service
+ksmtuned.service
+lxcfs.service
+lxc-monitord.service
+nagios-nrpe-server.service
+postfix@-.service
+pve-cluster.service
+pvedaemon.service
+pve-firewall.service
+pvefw-logger.service
+pve-ha-crm.service
+pve-ha-lrm.service
+pve-lxc-syscalld.service
+pveproxy.service
+pvescheduler.service
+pvestatd.service
+qmeventd.service
+rpcbind.service
+rrdcached.service
+rsyslog.service
+smartmontools.service
+spiceproxy.service
+ssh.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+user@0.service
+watchdog-mux.service
+zfs-zed.service"
+

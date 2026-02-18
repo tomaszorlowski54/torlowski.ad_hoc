@@ -1,0 +1,61 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+gisdoc-prod-1, Rocky 9.4, 10.64.12.37, "/dev/mapper/vg_os-lv_root     12G  4.2G  7.9G  35% /
+/dev/mapper/vg_data-lv_data  3.0G  184M  2.9G   7% /data
+/dev/mapper/vg_data-lv_opt   2.0G  1.7G  314M  85% /opt
+/dev/mapper/vg_os-lv_var     5.0G  786M  4.3G  16% /var", "Local
+0.0.0.0:111
+127.0.0.1:323
+[::]:111
+[::1]:323
+127.0.0.1:5432
+0.0.0.0:80
+0.0.0.0:111
+0.0.0.0:22
+0.0.0.0:5666
+127.0.0.1:1046
+127.0.0.1:1044
+127.0.0.1:1045
+0.0.0.0:443
+[::ffff:127.0.0.1]:8008
+[::ffff:127.0.0.1]:8006
+[::ffff:127.0.0.1]:8007
+[::ffff:127.0.0.1]:8082
+[::ffff:127.0.0.1]:8083
+[::ffff:127.0.0.1]:8081
+[::]:111
+*:5643
+[::]:22
+[::]:5666
+*:27185
+*:9705
+*:17893
+*:18933
+*:30131
+*:9002
+*:9000
+*:9001", "NetworkManager.service
+auditd.service
+chronyd.service
+crond.service
+dbus-broker.service
+firewalld.service
+getty@tty1.service
+gssproxy.service
+irqbalance.service
+nginx.service
+nrpe.service
+polkit.service
+postgresql-16.service
+qemu-guest-agent.service
+rpcbind.service
+rsyslog.service
+sshd.service
+sssd-kcm.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+tomcat_dxf-gisdoc.service
+tomcat_hkt-gisdoc.service
+tomcat_roberbau-gisdoc.service
+user@0.service"
+

@@ -1,0 +1,52 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+fg-app-6, Rocky 9.2, 10.64.12.56, "/dev/mapper/vg_os-lv_root        12G  3.9G  8.2G  32% /
+/dev/mapper/vg_os-lv_var        5.0G  1.2G  3.9G  24% /var
+/dev/mapper/vg_os-lv_vartomcat   20G  8.9G   12G  45% /var/tomcat_heap_dump
+/dev/mapper/vg_data-lv_opt       10G  2.1G  8.0G  21% /opt
+/dev/mapper/vg_data-lv_data     5.9T  5.6T  338G  95% /data", "Local
+0.0.0.0:111
+127.0.0.1:323
+[::]:111
+[::1]:323
+0.0.0.0:80
+0.0.0.0:111
+0.0.0.0:22
+127.0.0.1:1044
+0.0.0.0:5666
+0.0.0.0:443
+127.0.0.1:5432
+[::]:111
+[::]:22
+*:6201
+[::]:5666
+[::ffff:127.0.0.1]:8080
+*:27463
+[::ffff:127.0.0.1]:8005
+*:8999", "auditd.service
+chronyd.service
+crond.service
+dbus-broker.service
+filebeat.service
+firewalld.service
+getty@tty1.service
+gssproxy.service
+irqbalance.service
+NetworkManager.service
+nginx.service
+nrpe.service
+oddjobd.service
+polkit.service
+postgresql-16.service
+qemu-guest-agent.service
+rpcbind.service
+rpc-gssd.service
+rsyslog.service
+sshd.service
+sssd-kcm.service
+sssd.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+tomcat.service
+user@0.service"
+

@@ -1,0 +1,34 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+dxf-prod-db-1, Rocky 9.6, 10.64.13.125, "/dev/mapper/vg_os-lv_root     12G  3.8G  8.3G  32% /
+/dev/mapper/vg_os-lv_var     5.0G  441M  4.6G   9% /var
+/dev/mapper/vg_data-lv_opt   2.0G   47M  2.0G   3% /opt
+/dev/mapper/vg_data-lv_data  3.0G  184M  2.9G   6% /data", "Local
+0.0.0.0:111
+127.0.0.1:323
+[::]:111
+[::1]:323
+0.0.0.0:111
+0.0.0.0:22
+0.0.0.0:5432
+[::]:111
+[::]:22
+[::]:5432", "NetworkManager.service
+auditd.service
+chronyd.service
+crond.service
+dbus-broker.service
+firewalld.service
+getty@tty1.service
+gssproxy.service
+irqbalance.service
+polkit.service
+postgresql-17.service
+qemu-guest-agent.service
+rpcbind.service
+rsyslog.service
+sshd.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+user@0.service"
+

@@ -1,0 +1,40 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+fg-restore-1, Rocky 9.6, 10.64.11.58, "/dev/mapper/vg_os-lv_root     12G  5.2G  6.9G  43% /
+/dev/mapper/vg_os-lv_var     5.0G 1000M  4.1G  20% /var
+/dev/mapper/vg_data-lv_opt   5.0G  558M  4.5G  11% /opt
+/dev/mapper/vg_data-lv_data   95G   31G   65G  32% /data", "Local
+0.0.0.0:111
+127.0.0.1:323
+[::]:111
+[::1]:323
+0.0.0.0:22
+0.0.0.0:80
+0.0.0.0:111
+0.0.0.0:443
+127.0.0.1:5432
+[::]:22
+[::]:111", "NetworkManager.service
+auditd.service
+chronyd.service
+crond.service
+dbus-broker.service
+filebeat.service
+firewalld.service
+getty@tty1.service
+gssproxy.service
+irqbalance.service
+nginx.service
+oddjobd.service
+polkit.service
+postgresql-16.service
+qemu-guest-agent.service
+rpc-gssd.service
+rpcbind.service
+rsyslog.service
+sshd.service
+sssd.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+user@0.service"
+

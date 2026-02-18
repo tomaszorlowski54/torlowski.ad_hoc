@@ -1,0 +1,62 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+ngn-proxmox-pve-1, Debian 11.10, 10.64.1.71, "System plików        rozm. użyte dost. %uż. zamont. na
+udev                  189G     0  189G   0% /dev
+/dev/mapper/pve-root   13G  4.9G  7.0G  42% /
+zfs-pve01              21T  256K   21T   1% /zfs-pve01
+zfs-pve01/vz           21T  2.1G   21T   1% /var/lib/vz
+/dev/fuse             128M   76K  128M   1% /etc/pve", "Local
+0.0.0.0:111
+127.0.0.1:323
+10.64.7.71:5405
+10.64.1.71:5406
+[::]:111
+[::1]:323
+127.0.0.1:85
+127.0.0.1:25
+0.0.0.0:111
+0.0.0.0:22
+0.0.0.0:5666
+[::1]:25
+[::]:111
+[::]:22
+*:3128
+[::]:5666
+*:8006", "atopacct.service
+atop.service
+chrony.service
+corosync.service
+cron.service
+dbus.service
+dm-event.service
+getty@tty1.service
+iscsid.service
+ksmtuned.service
+lxcfs.service
+lxc-monitord.service
+multipathd.service
+nagios-nrpe-server.service
+postfix@-.service
+pve-cluster.service
+pvedaemon.service
+pve-firewall.service
+pvefw-logger.service
+pve-ha-crm.service
+pve-ha-lrm.service
+pve-lxc-syscalld.service
+pveproxy.service
+pvescheduler.service
+pvestatd.service
+qmeventd.service
+rpcbind.service
+rrdcached.service
+rsyslog.service
+smartmontools.service
+spiceproxy.service
+ssh.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+user@0.service
+watchdog-mux.service
+zfs-zed.service"
+

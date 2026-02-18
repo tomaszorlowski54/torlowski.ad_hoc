@@ -1,0 +1,63 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+parking-app-1, CentOS 7.7, 10.64.1.133, "/dev/mapper/centos-root  9.4G  3.8G  5.6G  41% /
+/dev/mapper/centos-var   7.4G  1.4G  6.0G  19% /var
+shm                       64M     0   64M   0% /var/lib/docker/containers/c707345e844ff626463d969a285be173b21d7acd79a6c1095137bda52763b609/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/0307692ea639c14904326f7e8dd7402904fdfdd9cd445679b1e83dbe1275b330/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/c70744d0f44faa1c57830f710aecb64836b39539184df1722796398dfcca4652/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/098b5dcaff560d71dc606f4fc93b474d272414db0f5880314eaa590e40cc925b/shm
+shm                       64M  4.0K   64M   1% /var/lib/docker/containers/146ddf83a75168342389691dd8a9e46e6596b4d3a0902d42ee98f4c9b719706c/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/a51fff7b49d9f226ce459383d3c77d7d557814882c07704cd9ad37fa5ca91a13/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/396120b2fd5c000fa4def48a2e06ad03708c8714e40dd33fd47df7ba651aa203/shm", "Local
+*:68
+*:111
+172.17.0.1:123
+172.18.0.1:123
+10.64.1.133:123
+127.0.0.1:123
+*:123
+[::]:123
+[::]:1700
+127.0.0.1:5432
+*:443
+*:1056
+*:5666
+127.0.0.1:8006
+*:8010
+*:9102
+*:111
+*:80
+*:8081
+*:22
+[::]:1883
+[::]:5666
+[::]:80
+[::]:8082
+[::]:22", "auditd.service
+bacula-fd.service
+crond.service
+dbus.service
+docker.service
+filebeat.service
+firewalld.service
+getty@tty1.service
+gssproxy.service
+irqbalance.service
+lvm2-lvmetad.service
+NetworkManager.service
+nginx.service
+nrpe.service
+ntpd.service
+oddjobd.service
+polkit.service
+postgresql-9.6.service
+rhsmcertd.service
+rpc-gssd.service
+rsyslog.service
+sshd.service
+sssd.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+tomcat.service
+tuned.service"
+

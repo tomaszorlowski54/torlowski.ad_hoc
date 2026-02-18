@@ -1,0 +1,117 @@
+---
+# - name: "Gather facts"
+#   ansible.builtin.setup:
+#   tags: data_collection
+
+# - name: "Get virtualization type"
+#   ansible.builtin.set_fact:
+#     sys_virtualization: "{{ ansible_facts.virtualization_type | default('unknown') }}"
+#   tags: data_collection
+
+- name: "Get IP used for connection"
+  ansible.builtin.set_fact:
+    sys_primary_ip: "{{ ansible_host }}"
+  tags: data_collection
+
+- name: Get formatted partition tree
+  shell: df -h --local | grep -vE 'tmpfs|overlay2|boot|Filesystem'
+  register: partitions_raw
+  tags: data_collection
+
+- name: "Get listening ports"
+  ansible.builtin.shell: |
+    ss -tulnp | awk '{print $5}'
+  register: ports_out
+  changed_when: false
+  tags: data_collection
+
+- name: "Get all running services"
+  ansible.builtin.shell: |
+    systemctl list-units --type=service --state=running --no-pager --no-legend | awk '{print $1}' | sort | uniq
+  register: services_out
+  changed_when: false
+  tags: data_collection
+
+- name: "Set exclusion list"
+  ansible.builtin.set_fact:
+    service_exclusions:
+      - "systemd-"
+      - "dbus"
+      - "polkit"
+      - "chronyd"
+      - "rsyslog"
+  run_once: true
+  tags: data_collection
+
+- name: "Filter running services"
+  ansible.builtin.set_fact:
+    filtered_services: >-
+      {{ services_out.stdout_lines
+         | reject('search', service_exclusions | join('|'))
+         | list }}
+  tags: data_collection
+
+- name: "Create/reset CSV file on remote host"
+  ansible.builtin.copy:
+    dest: "/tmp/system_data_{{ inventory_hostname }}.csv"
+    content: "hostname,os_version,virtualization,ip,partitions,listening_ports,running_services\n"
+    owner: root
+    group: root
+    mode: '0644'
+  tags: data_collection
+
+- name: "Create CSV line"
+  lineinfile:
+    path: "/tmp/system_data_{{ inventory_hostname }}.csv"
+    insertafter: EOF
+    line: >
+      {{ inventory_hostname }},
+      {{ ansible_facts.distribution ~ " " ~ ansible_facts.distribution_version }},
+      {{ sys_primary_ip }},
+      "{{ partitions_raw.stdout }}",
+      "{{ ports_out.stdout }}",
+      "{{ services_out.stdout }}"
+  tags: data_collection
+
+- name: "Ensure local dir for storing CSV exists"
+  local_action:
+    module: file
+    path: "{{ role_path }}/files/servers_informations"
+    state: directory
+    owner: torlowski
+    group: torlowski
+    mode: '0755'
+  run_once: true
+  tags: data_collection
+
+- name: "Fetch CSV file from remote server"
+  ansible.builtin.fetch:
+    src: "/tmp/system_data_{{ inventory_hostname }}.csv"
+    dest: "{{ role_path }}/files/servers_informations/system_data_{{ inventory_hostname }}.csv"
+    flat: true
+  tags: data_collection
+
+- name: "Fix permissions on local CSV file"
+  local_action:
+    module: file
+    path: "{{ role_path }}/files/servers_informations/system_data_{{ inventory_hostname }}.csv"
+    owner: torlowski
+    group: torlowski
+    mode: '0644'
+  tags: data_collection 
+
+- name: "Merge all server CSVs into one file"
+  ansible.builtin.shell: |
+    cat {{ role_path }}/files/servers_informations/system_data_*.csv | grep -v os_version > {{ role_path }}/files/servers_informations/all_servers_data.csv
+  args:
+    executable: /bin/bash
+  run_once: true
+  delegate_to: localhost
+  tags: data_collection
+
+- name: "Remove empty lines from CSV using shell"
+  ansible.builtin.shell: |
+    sed -i '/^\s*$/d' "{{ role_path }}/files/servers_informations/all_servers_data.csv"
+  run_once: true
+  delegate_to: localhost
+  tags: data_collection

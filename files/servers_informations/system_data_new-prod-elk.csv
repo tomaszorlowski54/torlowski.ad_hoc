@@ -1,0 +1,46 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+new-prod-elk, Rocky 8.6, 10.64.1.163, "/dev/mapper/vg_os-root        12G  5.7G  6.4G  47% /
+/dev/mapper/vg_os-var        5.0G  2.9G  2.2G  57% /var
+/dev/mapper/vg_data-lv_data  2.0T  1.6T  387G  81% /data", "Local
+127.0.0.1:323
+0.0.0.0:111
+[::1]:323
+[::]:111
+0.0.0.0:22
+0.0.0.0:443
+0.0.0.0:5601
+0.0.0.0:5666
+0.0.0.0:111
+0.0.0.0:80
+[::]:22
+[::ffff:127.0.0.1]:9600
+[::]:5666
+[::]:111
+*:9200
+*:5044
+*:9300", "NetworkManager.service
+auditd.service
+chronyd.service
+crond.service
+dbus.service
+elasticsearch.service
+filebeat.service
+firewalld.service
+getty@tty1.service
+irqbalance.service
+kibana.service
+logstash.service
+nginx.service
+nrpe.service
+polkit.service
+qemu-guest-agent.service
+rpcbind.service
+rsyslog.service
+sshd.service
+sssd.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+tuned.service
+user@0.service"
+

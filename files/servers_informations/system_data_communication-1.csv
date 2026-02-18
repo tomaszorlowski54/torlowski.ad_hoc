@@ -1,0 +1,52 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+communication-1, Ubuntu 24.04, 10.64.1.146, "/dev/mapper/vg_os-lv_root     11G  3.3G  7.8G  30% /
+/dev/mapper/vg_os-lv_var      16G  5.0G   12G  31% /var
+/dev/mapper/vg_data-lv_data  2.8T  1.4T  1.4T  49% /data", "Local
+127.0.0.54:53
+127.0.0.53%lo:53
+10.64.1.146%ens18:68
+0.0.0.0:111
+[::]:111
+0.0.0.0:111
+0.0.0.0:22
+0.0.0.0:25
+0.0.0.0:443
+127.0.0.53%lo:53
+0.0.0.0:5666
+127.0.0.1:6379
+127.0.0.1:5432
+127.0.0.54:53
+[::]:111
+[::]:22
+[::]:25
+[::]:443
+[::]:5666
+[::1]:6379", "atopacct.service
+atop.service
+cron.service
+dbus.service
+filebeat.service
+getty@tty1.service
+multipathd.service
+nagios-nrpe-server.service
+networkd-dispatcher.service
+nginx.service
+php8.3-fpm.service
+polkit.service
+postfix@-.service
+postgresql@16-main.service
+qemu-guest-agent.service
+redis-server.service
+rpcbind.service
+rsyslog.service
+snapd.service
+ssh.service
+systemd-journald.service
+systemd-logind.service
+systemd-networkd.service
+systemd-resolved.service
+systemd-timesyncd.service
+systemd-udevd.service
+unattended-upgrades.service
+user@0.service"
+

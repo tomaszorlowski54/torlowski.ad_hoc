@@ -1,0 +1,49 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+proxmox-backup-2, Debian 13.0, 10.64.1.183, "udev                  126G     0  126G   0% /dev
+/dev/mapper/pbs-root  204G   10G  194G   5% /
+efivarfs              304K   70K  230K  24% /sys/firmware/efi/efivars
+data                  182T  384K  182T   1% /data
+data/restore          182T  1.0M  182T   1% /data/restore
+data/other            187T  5.1T  182T   3% /data/other
+data/backuppc         240T   58T  182T  25% /data/backuppc
+data/pbs              186T  3.8T  182T   3% /data/pbs", "Local
+0.0.0.0:111
+127.0.0.1:323
+[::]:111
+[::1]:323
+10.64.1.183:80
+10.64.1.183:443
+0.0.0.0:22
+0.0.0.0:111
+0.0.0.0:5666
+127.0.0.1:80
+127.0.0.1:82
+127.0.0.1:25
+[::]:22
+[::]:111
+[::]:5666
+*:8007
+[::1]:25", "apache2.service
+atopacct.service
+atop.service
+backuppc.service
+chrony.service
+cron.service
+dbus.service
+getty@tty1.service
+nagios-nrpe-server.service
+nfs-blkmap.service
+nginx.service
+postfix.service
+proxmox-backup-proxy.service
+proxmox-backup.service
+rpcbind.service
+rsyslog.service
+smartmontools.service
+ssh.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+user@0.service
+zfs-zed.service"
+

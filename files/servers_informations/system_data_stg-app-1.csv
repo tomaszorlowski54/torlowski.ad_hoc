@@ -1,0 +1,40 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+stg-app-1, CentOS 7.4, 10.64.1.112, "/dev/mapper/centos-root      9.4G  2.6G  6.8G  28% /
+/dev/mapper/centos-var       7.4G  732M  6.6G  10% /var
+/dev/mapper/vg_data-lv_data   10G  137M  9.9G   2% /data", "Local
+*:68
+*:47894
+:::22768
+*:9102
+*:111
+*:8080
+*:22
+127.0.0.1:5432
+*:5666
+127.0.0.1:8005
+:::22
+:::5666", "auditd.service
+bacula-fd.service
+crond.service
+dbus.service
+filebeat.service
+getty@tty1.service
+gssproxy.service
+irqbalance.service
+lvm2-lvmetad.service
+NetworkManager.service
+nrpe.service
+oddjobd.service
+polkit.service
+postgresql-12.service
+qemu-guest-agent.service
+rpc-gssd.service
+rsyslog.service
+sshd.service
+sssd.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+tomcat_work_time.service
+tuned.service"
+

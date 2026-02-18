@@ -1,0 +1,33 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+ramp-db-1, Rocky 9.4, 10.64.11.45, "/dev/mapper/vg_os-lv_root   12G  5.0G  7.1G  42% /
+/dev/mapper/vg_os-lv_var    15G  3.5G   12G  24% /var", "Local
+0.0.0.0:111
+127.0.0.1:323
+[::]:111
+[::1]:323
+0.0.0.0:22
+0.0.0.0:111
+*:3306
+*:33060
+[::]:22
+[::]:111", "auditd.service
+chronyd.service
+containerd.service
+crond.service
+dbus-broker.service
+docker.service
+firewalld.service
+getty@tty1.service
+gssproxy.service
+irqbalance.service
+NetworkManager.service
+polkit.service
+qemu-guest-agent.service
+rpcbind.service
+rsyslog.service
+sshd.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+user@0.service"
+

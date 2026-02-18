@@ -1,0 +1,58 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+dev-srv-01, CentOS 7.4, 10.64.1.131, "/dev/mapper/centos-root          9.4G  6.0G  3.4G  65% /
+/dev/mapper/centos-var           7.4G  2.0G  5.4G  27% /var
+/dev/mapper/vg_storage-lv_www     75G   46G   30G  61% /var/www
+/dev/mapper/vg_storage-lv_mysql  5.0G  1.9G  3.2G  38% /var/lib/mysql", "Local
+*:45590
+*:68
+10.64.1.131:123
+127.0.0.1:123
+*:123
+:::49685
+:::123
+127.0.0.1:3306
+10.64.1.131:63790
+127.0.0.1:63790
+*:9102
+*:111
+*:80
+*:9200
+*:9300
+*:22
+10.64.1.131:25
+*:443
+*:5666
+127.0.0.1:9000
+:::22
+:::5666", "auditd.service
+bacula-fd.service
+crond.service
+dbus.service
+elasticsearch.service
+filebeat.service
+getty@tty1.service
+gssproxy.service
+irqbalance.service
+lvm2-lvmetad.service
+mysqld.service
+NetworkManager.service
+nginx.service
+nrpe.service
+ntpd.service
+oddjobd.service
+php72-php-fpm.service
+php83-php-fpm.service
+polkit.service
+postfix.service
+qemu-guest-agent.service
+redis-server@redis-63790.service
+rpc-gssd.service
+rsyslog.service
+sentinelone.service
+sshd.service
+sssd.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+tuned.service"
+

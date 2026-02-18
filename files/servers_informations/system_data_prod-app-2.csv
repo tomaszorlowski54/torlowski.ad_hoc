@@ -1,0 +1,46 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+prod-app-2, Rocky 9.6, 10.64.12.42, "/dev/mapper/vg_os-lv_root     12G  4.3G  7.8G  36% /
+/dev/mapper/vg_data-lv_opt    10G  182M  9.9G   2% /opt
+/dev/mapper/vg_data-lv_data  100G   34G   67G  34% /data
+/dev/mapper/vg_os-lv_var     5.0G  495M  4.6G  10% /var", "Local
+0.0.0.0:111
+127.0.0.1:323
+[::]:111
+[::1]:323
+127.0.0.1:6379
+127.0.0.1:9000
+127.0.0.1:9074
+0.0.0.0:3306
+0.0.0.0:22
+0.0.0.0:111
+0.0.0.0:80
+0.0.0.0:443
+[::]:3306
+[::]:22
+[::]:111", "NetworkManager.service
+auditd.service
+chronyd.service
+crond.service
+dbus-broker.service
+firewalld.service
+getty@tty1.service
+gssproxy.service
+irqbalance.service
+mariadb.service
+nginx.service
+oddjobd.service
+php74-php-fpm.service
+php82-php-fpm.service
+polkit.service
+qemu-guest-agent.service
+redis.service
+rpc-gssd.service
+rpcbind.service
+rsyslog.service
+sshd.service
+sssd.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+user@0.service"
+

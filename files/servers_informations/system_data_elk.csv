@@ -1,0 +1,85 @@
+hostname,os_version,virtualization,ip,partitions,listening_ports,running_services
+elk, CentOS 7.4, 10.64.1.4, "/dev/mapper/centos-root   87G   58G   30G  67% /
+/dev/mapper/centos-var   170G  123G   48G  73% /var
+shm                       64M     0   64M   0% /var/lib/docker/containers/68549f37328e435ffeca57b707de0740222bbfb348506ac5d7faee84f43b063b/mounts/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/a99e6c4f4cb5530a35378db760c5abc734f36427065dee9685b156d5dca66f93/mounts/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/ab344dcdd8cf7b1ed6bd9cba3afb729af9fc8d53918c9017fccfbeaf2e9035c7/mounts/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/d87527670a4e94f41c76607f7f0c1227dd0d08f62d60b6c13d29aba6c2954ff0/mounts/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/45f13cc8caea8511040f526bf3bfaabf9861377bfa7b9c87821fb3ea428ea5f3/mounts/shm
+shm                       64M  8.0K   64M   1% /var/lib/docker/containers/4cc4d3ccd7e7a1177da9998ccbd2d254cc1ba9f0b6937df5e392bab5891a92d7/mounts/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/483c0c6aebb6fcceb4158fb7dccaf78bf43884cd297c87ef32f84d9f71bdcbdf/mounts/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/0cfa325143d8477fda4728a260bb0576456cffd798dccb5c75f00e799eb9c80a/mounts/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/7e4c16e6776813614f487d55a6fc85de4d3f9123ad8f54372b8091668ab8204d/mounts/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/ce6187eac3689fd056009e02f1e036895331880523b72d6340b2e5ccbf86a4f0/mounts/shm
+shm                       64M  8.0K   64M   1% /var/lib/docker/containers/7ded59ffd1d5a868be5c214a7d28faf58e8e1b1d68a7be414edc077e9e2d262f/mounts/shm
+shm                       64M  8.0K   64M   1% /var/lib/docker/containers/f700ce3936a3091298ed9ed9bd298c85ac9e80689eef19cfcca86bc11522b856/mounts/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/b7bc496e020a8b9d526845f21f065578aeca8c99c27e91edd8527bc1f74ba817/mounts/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/1979b96ff664392a42f00331f8eabeeefa5a77dd1e77673f27767d67812bfb98/mounts/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/3b471346221f67f3c6e726ce32c1e13c9525fbb830599a8ca4597488ef8c2331/mounts/shm
+shm                       64M  4.0K   64M   1% /var/lib/docker/containers/52c019e8f1ced1d71705c7f5310306f67baeb5d0a436b18e00cadaa59d4fb0cd/mounts/shm
+shm                       64M     0   64M   0% /var/lib/docker/containers/01362a43013febd55e0d778398f14b03cc2179209033229f6b99e1f8a37284b0/mounts/shm", "Local
+*:68
+127.0.0.1:323
+:::8089
+:::8090
+::1:323
+10.64.1.4:588
+*:9102
+*:111
+*:80
+*:84
+*:22
+127.0.0.1:19991
+127.0.0.1:8088
+127.0.0.1:13306
+*:443
+*:5601
+*:5666
+:::587
+:::110
+:::143
+:::9200
+:::81
+:::465
+:::5044
+:::9300
+:::22
+:::8086
+:::25
+:::444
+:::4190
+::ffff:127.0.0.1:9600
+:::993
+:::5666
+:::995", "auditd.service
+bacula-fd.service
+chronyd.service
+crond.service
+dbus.service
+docker.service
+elasticsearch.service
+filebeat.service
+getty@tty1.service
+gogs.service
+gogs-web.service
+gssproxy.service
+influxdb.service
+irqbalance.service
+kibana.service
+logstash.service
+lvm2-lvmetad.service
+NetworkManager.service
+nginx.service
+nrpe.service
+oddjobd.service
+polkit.service
+qemu-guest-agent.service
+rpc-gssd.service
+rsyslog.service
+sshd.service
+sssd.service
+systemd-journald.service
+systemd-logind.service
+systemd-udevd.service
+tuned.service"
+

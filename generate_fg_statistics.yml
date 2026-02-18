@@ -8,6 +8,10 @@
 
 ## getting space size of mandant to removal
 ## ansible-playbook /etc/ansible/roles/torlowski.ad_hoc/generate_fg_statistics.yml -u root -t "get_stat_inactive" -l ngn_fg_prod_stats
+
+## getting statistics of photo accuracy 
+## ansible-playbook /etc/ansible/roles/torlowski.ad_hoc/generate_fg_statistics.yml -u root -t "get_photos_stats" -l ngn_fg_prod_stats
+
   vars:
     fotogis_db: fotogis
     fotogis_user: postgres
@@ -16,6 +20,8 @@
     csv_file_owner: torlowski
     run_date: "2020-01-01"
     tmp_dir: "/tmp/fotogis_stats"
+    tmp_photos_dir: "/tmp/fotogis_photos_stats"
+    csv_file_photos: "{{ playbook_dir }}/files/statistics_fg/fotogis_photos_stats.csv"
 
   tasks:
     - name: Run Active Mandants query
@@ -244,4 +250,94 @@
         - name: Cleanup active JSON partial files
           file:
             path: "{{ tmp_dir }}"
+            state: absent
+
+
+    # --- 1. Run the photo statistics query per host ---
+    - name: Run photo device statistics query
+      community.postgresql.postgresql_query:
+        db: "{{ fotogis_db }}"
+        query: |
+          SELECT
+              p.device,
+              COUNT(*) AS photos_count,
+              AVG(p.accuracy) AS avg_accuracy
+          FROM photos p
+          WHERE p.creation_date >= NOW() - INTERVAL '2 months'
+            AND p.device IS NOT NULL
+            AND p.device <> ''
+            AND p.device NOT ILIKE 'Mozilla%%'
+            AND p.device NOT ILIKE 'Postman%%'
+          GROUP BY p.device
+          ORDER BY photos_count DESC;
+        login_user: "{{ fotogis_user }}"
+      register: photos_stats_result
+      become_user: "{{ fotogis_user }}"
+      tags: get_photos_stats
+
+    # --- 2. Ensure temporary directory exists ---
+    - name: Ensure tmp directory exists on localhost
+      file:
+        path: "{{ tmp_photos_dir }}"
+        state: directory
+        mode: '0755'
+      delegate_to: localhost
+      run_once: true
+      tags: get_photos_stats
+
+    # --- 3. Save per-host JSON results ---
+    - name: Save photos statistics results per host into JSON
+      copy:
+        content: "{{ {'hostname': inventory_hostname, 'stats': photos_stats_result.query_result} | to_json }}"
+        dest: "{{ tmp_photos_dir }}/{{ inventory_hostname }}_photos_stats.json"
+      delegate_to: localhost
+      run_once: false
+      tags: get_photos_stats
+
+    # --- 4. Aggregate results into a CSV on localhost ---
+    - name: Aggregate photo statistics from all hosts and write CSV
+      delegate_to: localhost
+      run_once: true
+      tags: get_photos_stats
+      block:
+
+        - name: Find all photo statistics JSON files
+          find:
+            paths: "{{ tmp_photos_dir }}"
+            patterns: "*_photos_stats.json"
+          register: photos_stats_files
+
+        - name: Load JSON data
+          set_fact:
+            all_photo_stats: "{{ all_photo_stats | default([]) + [lookup('file', item.path) | from_json] }}"
+          loop: "{{ photos_stats_files.files }}"
+
+        - name: Build CSV content in memory
+          set_fact:
+            photos_csv_content: |
+              hostname,device,photos_count,avg_accuracy
+              {% for host in all_photo_stats %}
+              {%   for row in host.stats %}
+              {{ host.hostname }},{{ row.device }},{{ row.photos_count }},{{ row.avg_accuracy }}
+              {%   endfor %}
+              {% endfor %}
+
+        - name: Write full CSV file at once
+          copy:
+            dest: "{{ csv_file_photos }}"
+            content: "{{ photos_csv_content }}"
+            owner: "{{ csv_file_owner }}"
+            group: "{{ csv_file_owner }}"
+            mode: '0644'
+
+        - name: Ensure CSV ownership and permissions are correct
+          file:
+            path: "{{ csv_file_photos }}"
+            owner: "{{ csv_file_owner }}"
+            group: "{{ csv_file_owner }}"
+            mode: '0644'
+
+        - name: Cleanup photo statistics JSON files
+          file:
+            path: "{{ tmp_photos_dir }}"
             state: absent
